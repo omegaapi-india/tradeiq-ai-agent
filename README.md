@@ -183,6 +183,22 @@ Want this adapted for a real research desk, trading journal, or internal dashboa
 - Telegram: **https://t.me/Omegaapiofficial**
 - Portfolio: **https://omegaapi.com**
 
+## Demo access and data safety
+
+Every public demo is a **3-day free trial**. Access is enforced by a signed, HttpOnly cookie issued by a Cloudflare Pages Function. There is no payment form, card field, subscription, or paid API key in any demo.
+
+The cookie contains only a timestamp and a random nonce. No IP address, name, email, phone number, or order/booking/trade detail is stored in it. Customer-facing public pages and APIs continue to hide personal data, and existing data-retention rules still apply. Clearing browser cookies starts a fresh trial; a commercial deployment should add accounts and billing for hard entitlement control.
+
+Local development and deployment need one extra secret:
+
+```bash
+# add to .dev.vars
+DEMO_TRIAL_SECRET=replace-with-a-long-random-string
+
+# upload for production
+npx wrangler pages secret bulk .dev.vars --project-name tradeiq
+```
+
 ## License
 
 MIT — see [LICENSE](LICENSE). Copyright © 2026 Krishna Prakash Ojha (Leon), OmegaAPI.
