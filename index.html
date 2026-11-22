@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="Krishna Prakash Ojha (Leon) — OmegaAPI">
+  <meta name="description" content="TradeIQ — explainable Indian stock signals with an optional local open LLM and a virtual paper portfolio.">
+  <title>TradeIQ — Explainable Trading Agent</title>
+  <link rel="stylesheet" href="/assets/styles.css">
+  <script type="module" src="/assets/app.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="#top" aria-label="TradeIQ home">
+        <span class="brand-mark">TQ</span>
+        <span class="brand-copy"><strong>TradeIQ</strong><small>OmegaAPI demo</small></span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#signals">Signals</a>
+        <a href="#workbench">Analysis</a>
+        <a href="#portfolio">Paper portfolio</a>
+        <a href="#llm">Open LLM</a>
+      </nav>
+
+      <a class="button button-small hire-cta" href="mailto:info@omegaapi.com?subject=TradeIQ%20demo%20inquiry">Hire OmegaAPI</a>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">Open LLM · Paper trading · Demo data</span>
+        <h1>Signals you can actually <span>explain.</span></h1>
+        <p class="hero-lead">
+          TradeIQ scores six Indian stocks with transparent indicators, then lets a local open LLM
+          explain the reasoning. No broker keys, no paid AI API, no real orders.
+        </p>
+        <div class="hero-actions">
+          <a class="button" href="#signals">Explore signals</a>
+          <button class="button button-secondary" id="localBtn" type="button">Use local LLM</button>
+        </div>
+        <div class="hero-meta">
+          <span>Llama · Mistral · Qwen via Ollama</span>
+          <span class="dot">•</span>
+          <span>Rule engine fallback</span>
+        </div>
+      </div>
+
+      <div class="hero-card" aria-label="Demo summary">
+        <div class="hero-card-top">
+          <span class="pulse"></span>
+          <span>Demo engine online</span>
+        </div>
+        <div class="hero-score">
+          <strong id="universeCount">6</strong>
+          <span>stocks scored</span>
+        </div>
+        <div class="hero-card-row"><span>Feed</span><strong id="feedDate">—</strong></div>
+        <div class="hero-card-row"><span>Starting cash</span><strong>₹1,00,000</strong></div>
+        <div class="hero-card-row"><span>Data source</span><strong>Simulated</strong></div>
+        <p class="hero-card-note">Deterministic candles. Same inputs, same signal every time.</p>
+      </div>
+    </section>
+
+    <div class="wrap">
+      <section class="notice" aria-label="Important disclaimer">
+        <span class="notice-icon">i</span>
+        <p id="disclaimerText">
+          Demo only: prices are simulated Indian equity candles, not live market data. Signals are not personalised financial advice and no real orders are placed.
+        </p>
+      </section>
+
+      <section class="feature-strip" aria-label="Highlights">
+        <article>
+          <strong>Explainable by design</strong>
+          <span>Every score is built from SMA, RSI, momentum, volatility, and volume checks.</span>
+        </article>
+        <article>
+          <strong>Open LLM optional</strong>
+          <span>Connect a local Ollama model for natural-language reasoning, or use the built-in fallback.</span>
+        </article>
+        <article>
+          <strong>Zero keys, zero cost</strong>
+          <span>No broker credentials, no paid data vendor, no analytics, and no third-party scripts.</span>
+        </article>
+      </feature-strip>
+
+      <section id="signals" class="section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Signal universe</span>
+            <h2>Today's demo watchlist</h2>
+            <p>Select a stock to inspect the analysis and paper-trade it with virtual cash.</p>
+          </div>
+          <span class="section-tag">Indian equities · simulated feed</span>
+        </div>
+        <div id="signalCards" class="signal-cards" aria-live="polite"></div>
+      </section>
+
+      <section id="workbench" class="section workbench-grid">
+        <div class="panel chart-panel">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">Selected symbol</span>
+              <h2 id="symbolName">Loading…</h2>
+              <span id="symbolCode" class="symbol-code">—</span>
+            </div>
+            <div class="price-block">
+              <strong id="priceValue">—</strong>
+              <span id="changeValue">—</span>
+            </div>
+          </div>
+
+          <div class="badge-row">
+            <span id="actionBadge" class="badge">—</span>
+            <span class="confidence-label">Confidence <strong id="confidenceValue">—</strong></span>
+          </div>
+
+          <canvas id="priceChart" class="chart-canvas" width="720" height="260" aria-label="Simulated closing price chart"></canvas>
+
+          <div id="indicatorGrid" class="indicator-grid"></div>
+
+          <div class="subhead">Why this signal</div>
+          <ul id="reasonList" class="reason-list"></ul>
+
+          <div id="levelGrid" class="level-grid"></div>
+        </div>
+
+        <div class="panel llm-panel" id="llm">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">Explainable AI</span>
+              <h2>Reasoning layer</h2>
+            </div>
+            <span id="explainStatus" class="status-chip">Ready</span>
+          </div>
+
+          <p id="explainText" class="explain-text">
+            Load a signal to generate an explanation.
+          </p>
+
+          <label class="switch-row" for="llmToggle">
+            <input id="llmToggle" type="checkbox" checked>
+            <span>Use local open LLM when the bridge is running</span>
+          </label>
+
+          <div class="code-block" aria-label="Local LLM setup commands">
+            <code>ollama pull llama3.2</code>
+            <code>npm run bridge</code>
+          </div>
+
+          <button class="button button-secondary button-full" id="retryExplain" type="button">
+            Regenerate explanation
+          </button>
+
+          <p class="fine-print">
+            The bridge binds only to <code>127.0.0.1</code>. If it is not running, the deterministic
+            rule engine explanation is shown automatically.
+          </p>
+        </div>
+      </section>
+
+      <section id="portfolio" class="section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">Virtual portfolio</span>
+            <h2>Practice without risk</h2>
+            <p>Trades are stored in this browser only. Nothing is sent to a broker or server.</p>
+          </div>
+        </div>
+
+        <div class="portfolio-grid">
+          <div class="panel trade-panel">
+            <h2>Paper trade ticket</h2>
+
+            <label class="field-label" for="tradeSymbol">Symbol</label>
+            <select id="tradeSymbol"></select>
+
+            <label class="field-label" for="tradeQty">Quantity</label>
+            <input id="tradeQty" type="number" min="1" step="1" value="10" inputmode="numeric">
+
+            <label class="field-label" for="tradePrice">Price (₹)</label>
+            <input id="tradePrice" type="number" min="1" step="0.01" inputmode="decimal">
+
+            <div class="button-row">
+              <button class="button buy" id="buyBtn" type="button">Paper buy</button>
+              <button class="button sell" id="sellBtn" type="button">Paper sell</button>
+            </div>
+
+            <p id="tradeMessage" class="form-message" role="status"></p>
+            <p class="fine-print">Virtual cash only. No orders are placed anywhere.</p>
+          </div>
+
+          <div class="panel portfolio-panel">
+            <div class="panel-head">
+              <h2>Performance</h2>
+              <button class="button button-ghost button-tiny" id="resetBtn" type="button">Reset</button>
+            </div>
+
+            <div class="kpi-grid">
+              <div><span>Equity</span><strong id="equityValue">—</strong></div>
+              <div><span>Cash</span><strong id="cashValue">—</strong></div>
+              <div><span>Total P&amp;L</span><strong id="pnlValue">—</strong></div>
+              <div><span>Deployed</span><strong id="deployedValue">—</strong></div>
+            </div>
+
+            <div class="subhead">Open positions</div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Symbol</th><th>Qty</th><th>Avg</th><th>Last</th><th>Unrealised</th></tr>
+                </thead>
+                <tbody id="positionsBody"></tbody>
+              </table>
+            </div>
+
+            <div class="subhead">Recent activity</div>
+            <ul id="historyList" class="history-list"></ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section how-section">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">How it works</span>
+            <h2>Simple, transparent, local-first</h2>
+          </div>
+        </div>
+        <div class="how-grid">
+          <article><span>01</span><h3>Build the feed</h3><p>A seeded generator creates 90 weekday candles for six Indian tickers. Clearly labelled as simulated data.</p></article>
+          <article><span>02</span><h3>Score the setup</h3><p>Five checks produce a score, action, confidence, support, resistance, stop, and target.</p></article>
+          <article><span>03</span><h3>Explain and practise</h3><p>A local open LLM explains the signal when available. Paper trades update virtual P&amp;L in your browser.</p></article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-inner">
+      <div>
+        <strong>TradeIQ</strong>
+        <p>Built by Krishna Prakash Ojha (Leon) · OmegaAPI</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://omegaapi.com" target="_blank" rel="noreferrer">Portfolio</a>
+        <a class="hire-cta" href="mailto:info@omegaapi.com?subject=TradeIQ%20demo%20inquiry">Email</a>
+        <a class="hire-cta" href="https://t.me/Omegaapiofficial" target="_blank" rel="noreferrer">Telegram</a>
+      </div>
+      <p class="footer-note">Demo software. Not financial advice.</p>
+    </div>
+  </footer>
+
+  <noscript>
+    <p class="noscript">This demo needs JavaScript to calculate signals and show the paper portfolio.</p>
+  </noscript>
+</body>
+</html>

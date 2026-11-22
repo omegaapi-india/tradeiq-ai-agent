@@ -1,0 +1,19 @@
+{
+  "name": "tradeiq-ai-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Explainable Indian stock signals with an optional local open LLM and virtual paper portfolio.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "wrangler pages dev . --port 8787",
+    "bridge": "node bridge/ollama-bridge.js",
+    "test": "node --test tests/*.test.js",
+    "deploy": "wrangler pages deploy . --project-name tradeiq --branch main"
+  },
+  "devDependencies": {
+    "wrangler": "4.166.0"
+  }
+}
